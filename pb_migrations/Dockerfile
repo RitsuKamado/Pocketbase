@@ -3,11 +3,18 @@ FROM alpine:latest
 # Install dependencies
 RUN apk add --no-cache libc6-compat
 
-# Copy files
+# Set working directory
 WORKDIR /app
-COPY pocketbase .
+
+# Copy files
+COPY pocketbase ./pocketbase
 COPY pb_data ./pb_data
 
-# Expose port and run PocketBase
-EXPOSE 8080
-CMD ["./pocketbase", "serve", "--http=0.0.0.0:8080"]
+# Make sure binary is executable
+RUN chmod +x ./pocketbase
+
+# Expose correct PocketBase port
+EXPOSE 8090
+
+# Run PocketBase server
+CMD ["./pocketbase", "serve", "--http=0.0.0.0:8090"]
